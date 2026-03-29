@@ -1,17 +1,19 @@
 import io
 import os
 import pandas as pd
+from azure.identity import ManagedIdentityCredential
 from azure.storage.blob import BlobServiceClient
 from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
-CONNECTION_STRING = os.environ.get("STORAGE_CONNECTION_STRING")
+STORAGE_ACCOUNT_URL = os.environ.get("STORAGE_ACCOUNT_URL")
 CONTAINER_NAME = os.environ.get("BLOB_CONTAINER", "dataset")
 BLOB_NAME = os.environ.get("BLOB_NAME", "dataset.csv")
 
 try:
-    client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
+    credential = ManagedIdentityCredential()
+    client = BlobServiceClient(account_url=STORAGE_ACCOUNT_URL, credential=credential)
     blob = client.get_blob_client(container=CONTAINER_NAME, blob=BLOB_NAME)
     data = blob.download_blob().readall()
     _df = pd.read_csv(io.BytesIO(data))
