@@ -16,6 +16,10 @@ variable "location" {
   default = "swedencentral"
 }
 
+variable "storage_connection_string" {
+  sensitive = true
+}
+
 locals {
   prefix = "insurance-devops"
 }
@@ -69,6 +73,11 @@ resource "azurerm_container_app" "api" {
     value = azurerm_container_registry.main.admin_password
   }
 
+  secret {
+    name  = "storage-connection-string"
+    value = var.storage_connection_string
+  }
+
   template {
     container {
       name   = "insurance-api"
@@ -77,8 +86,18 @@ resource "azurerm_container_app" "api" {
       memory = "0.5Gi"
 
       env {
-        name  = "DATA_PATH"
-        value = "dataset/dataset.csv"
+        name        = "STORAGE_CONNECTION_STRING"
+        secret_name = "storage-connection-string"
+      }
+
+      env {
+        name  = "BLOB_CONTAINER"
+        value = "dataset"
+      }
+
+      env {
+        name  = "BLOB_NAME"
+        value = "dataset.csv"
       }
 
       liveness_probe {

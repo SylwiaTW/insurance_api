@@ -1,17 +1,24 @@
+import io
 import os
 import pandas as pd
+from azure.storage.blob import BlobServiceClient
 from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
-DATA_PATH = os.environ.get("DATA_PATH", "dataset/customer_training_dataset.csv")
+CONNECTION_STRING = os.environ.get("STORAGE_CONNECTION_STRING")
+CONTAINER_NAME = os.environ.get("BLOB_CONTAINER", "dataset")
+BLOB_NAME = os.environ.get("BLOB_NAME", "dataset.csv")
 
 try:
-    _df = pd.read_csv(DATA_PATH)
+    client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
+    blob = client.get_blob_client(container=CONTAINER_NAME, blob=BLOB_NAME)
+    data = blob.download_blob().readall()
+    _df = pd.read_csv(io.BytesIO(data))
     unnamed = [c for c in _df.columns if c.startswith("Unnamed")]
     if unnamed:
         _df = _df.drop(columns=unnamed)
-except FileNotFoundError:
+except Exception:
     _df = pd.DataFrame()
 
 
