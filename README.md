@@ -1,4 +1,4 @@
-# Insurance Data API — DevOps Recruitment Task
+# Insurance Data API
 
 Microservice providing insurance portfolio data to external clients via REST API.
 
