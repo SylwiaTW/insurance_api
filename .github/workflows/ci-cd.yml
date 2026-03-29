@@ -9,6 +9,7 @@ env:
   IMAGE_NAME: insurance-api
   CONTAINER_APP_NAME: insurance-api
   RESOURCE_GROUP: insurance-devops-rg
+  KEY_VAULT_NAME: insurance-devops-kv
 
 jobs:
   test:
@@ -36,12 +37,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get secrets from Key Vault
+        uses: azure/get-keyvault-secrets@v1
+        with:
+          keyvault: ${{ env.KEY_VAULT_NAME }}
+          secrets: "acr-password, acr-username"
+        id: kvsecrets
+
       - name: Log in to Azure Container Registry
         uses: azure/docker-login@v2
         with:
           login-server: ${{ env.REGISTRY }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          username: ${{ steps.kvsecrets.outputs.acr-username }}
+          password: ${{ steps.kvsecrets.outputs.acr-password }}
 
       - name: Build Docker image
         run: docker build -f docker/Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
