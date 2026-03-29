@@ -39,7 +39,6 @@ GitHub Actions CI/CD
 
 - **Managed Identity** — the application authenticates to ACR and Blob Storage without any passwords or connection strings. Access is granted via Azure RBAC roles (`AcrPull`, `Storage Blob Data Reader`)
 - **OIDC in pipeline** — GitHub Actions authenticates to Azure using federated tokens (no long-lived secrets in GitHub Secrets)
-- **Least privilege** — Managed Identity has only the minimum required roles
 - **Non-root container** — Dockerfile runs as `appuser`
 - **Multi-stage Docker build** — build dependencies and cache do not reach the final image
 
