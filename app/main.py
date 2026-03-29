@@ -20,7 +20,8 @@ try:
     unnamed = [c for c in _df.columns if c.startswith("Unnamed")]
     if unnamed:
         _df = _df.drop(columns=unnamed)
-except Exception:
+except Exception as e:
+    print(f"Failed to load dataset: {e}", flush=True)
     _df = pd.DataFrame()
 
 
