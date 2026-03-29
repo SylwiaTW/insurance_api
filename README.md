@@ -107,3 +107,9 @@ Pipeline file: [.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml)
 | `GET /insurance-data` | Returns paginated list of records (default: 10) |
 | `GET /insurance-data?limit=5&offset=10` | Pagination parameters |
 | `GET /insurance-data/{id}` | Returns single record by ID |
+
+---
+
+## Dataset
+
+Source: [Insurance Customer Data — Kaggle](https://www.kaggle.com/datasets/chetan0361/insurance-customer-data?resource=download)
