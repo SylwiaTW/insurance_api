@@ -109,6 +109,11 @@ resource "azurerm_container_app" "api" {
       memory = "0.5Gi"
 
       env {
+        name  = "AZURE_CLIENT_ID"
+        value = azurerm_user_assigned_identity.api.client_id
+      }
+
+      env {
         name  = "STORAGE_ACCOUNT_URL"
         value = azurerm_storage_account.main.primary_blob_endpoint
       }
