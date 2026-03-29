@@ -78,7 +78,7 @@ resource "azurerm_container_app" "api" {
 
       env {
         name  = "DATA_PATH"
-        value = "dataset/customer_training_dataset.csv"
+        value = "dataset/dataset.csv"
       }
 
       liveness_probe {
