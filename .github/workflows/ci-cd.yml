@@ -9,7 +9,6 @@ env:
   IMAGE_NAME: insurance-api
   CONTAINER_APP_NAME: insurance-api
   RESOURCE_GROUP: insurance-devops-rg
-  KEY_VAULT_NAME: insurance-devops-kv
 
 jobs:
   test:
