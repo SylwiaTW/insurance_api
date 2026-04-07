@@ -19,8 +19,7 @@ GitHub Actions CI/CD
   └── [deploy]          Azure Container Apps (rolling update, zero downtime)
                                │
                                ├── GET /health              ← liveness probe
-                               ├── GET /insurance-data      ← paginated data
-                               └── GET /insurance-data/{id} ← single record
+                               ├── GET /insurance-data      ← last 10 records
                                │
                           Azure Blob Storage (dataset)
                           Azure Monitor + Log Analytics
@@ -102,10 +101,8 @@ Pipeline file: [.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml)
 
 | Endpoint | Description |
 |---|---|
-| `GET /health` | Returns status and number of loaded records |
-| `GET /insurance-data` | Returns paginated list of records (default: 10) |
-| `GET /insurance-data?limit=5&offset=10` | Pagination parameters |
-| `GET /insurance-data/{id}` | Returns single record by ID |
+| `GET /health` | Returns plain text: `ok, loaded {n} records` |
+| `GET /insurance-data` | Returns last 10 records as JSON array |
 
 ---
 
