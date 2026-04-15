@@ -2,8 +2,6 @@
 
 Microservice providing insurance portfolio data to external clients via REST API.
 
-**Live API:** `https://insurance-api.jollyhill-e1fde3a9.swedencentral.azurecontainerapps.io/insurance-data`
-
 ---
 
 ## Architecture
